@@ -4,7 +4,7 @@ from rest_framework import status
 from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .models import CustomUser
+from ..Models.models import CustomUser
 
 
 
