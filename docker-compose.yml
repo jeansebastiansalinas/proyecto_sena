@@ -1,17 +1,6 @@
-services:
+version: "3.9"
 
-  db:
-    image: postgres:16
-    container_name: postgres_db
-    restart: always
-    environment:
-      POSTGRES_DB: proyecto_sena
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5433:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+services:
 
   backend:
     build: ./backend
@@ -20,10 +9,8 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app
-    env_file:
-      - .env
-    depends_on:
-      - db
+      - ./backend/db.sqlite3:/app/db.sqlite3 
+    command: python manage.py runserver 0.0.0.0:8000
 
   frontend:
     build: ./frontend
@@ -33,9 +20,6 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    command: npm run dev -- --host
     depends_on:
       - backend
-    command: npm run dev -- --host
-
-volumes:
-  postgres_data:
